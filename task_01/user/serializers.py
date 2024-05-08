@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import User
 from rest_framework.validators import UniqueValidator, ValidationError
+from django.contrib.auth import authenticate
 
 # class SignUpSerializer(serializers.ModelSerializer):
 #     # username = serializers.CharField(max_length=100)
@@ -56,5 +57,23 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
 
         return user
+    
+class SignInSerializer(serializers.Serializer):
 
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+        password = attrs.get('password')
+        print('hellooo',attrs)
+
+        if email and password:
+            user = authenticate(email=email, password=password)
+            if not user:
+                raise serializers.ValidationError("Failed to login with provided credentials")
+            else:
+                return attrs
+        else:
+            raise serializers.ValidationError("Please provide both email and password")
 
