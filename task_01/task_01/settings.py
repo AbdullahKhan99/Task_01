@@ -37,7 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'user',
 ]
+
+AUTH_USER_MODEL = 'user.User'
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -99,6 +105,38 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+PASSWORD_HASHERS = [
+    # https://docs.djangoproject.com/en/dev/topics/auth/passwords/#using-argon2-with-django
+    # "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    # "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    # "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+]
+
+# Minimum password length
+MINIMUM_PASSWORD_LENGTH = 8
+
+# https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
+AUTH_PASSWORD_VALIDATORS = [
+    # Check similarity between user attributes and password
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # noqa E501
+        "OPTIONS": {
+            # Reject passwords that are similar to user properties
+            "max_similarity": 0.7,
+        },
+    },
+    # Checks whether password is greater than required minimum length
+
+    # Checks whether password is not a common password
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"  # noqa E501
+    },
+]
+# settings.py
+
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -121,3 +159,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    "NON_FIELD_ERRORS_KEY":"errors"
+}
+
+
