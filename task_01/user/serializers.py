@@ -66,7 +66,6 @@ class SignInSerializer(serializers.Serializer):
     def validate(self, attrs):
         email = attrs.get('email')
         password = attrs.get('password')
-        print('hellooo',attrs)
 
         if email and password:
             user = authenticate(email=email, password=password)
@@ -76,4 +75,6 @@ class SignInSerializer(serializers.Serializer):
                 return attrs
         else:
             raise serializers.ValidationError("Please provide both email and password")
+        
+
 
